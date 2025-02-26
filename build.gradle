@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty 'karate.option', System.properties.getProperty('karate.options')
+    systemProperty 'karate.env', System.properties.getProperty('karate.env')
+    outputs.upToDateWhen { false }
+}
+
+dependencies {
+    testImplementation group: 'io.karatelabs', name: 'karate-junit5', version: '1.5.0'
+    testImplementation group: 'net.datafaker', name: 'datafaker', version: '2.4.2'
+
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
