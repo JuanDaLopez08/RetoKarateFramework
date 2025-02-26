@@ -2,6 +2,7 @@ Feature:
 
   Background:
     * url url_base
+    * path booking
     * header Accept = 'application/json'
 
   Scenario:

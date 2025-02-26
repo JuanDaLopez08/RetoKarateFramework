@@ -2,6 +2,7 @@ Feature:
 
   Background:
     * url url_base
+    * path booking
     * header Accept = 'application/json'
     * header Content-Type = 'application/json'
     * def informacion_random = Java.type('utilidades.DatosRandom')

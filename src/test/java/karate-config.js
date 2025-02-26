@@ -12,7 +12,7 @@ function fn() {
   if (env == 'dev') {
     config.url_base = ''
   } else if (env == 'qa') {
-    config.url_base = 'https://restful-booker.herokuapp.com/booking',
+    config.url_base = 'https://restful-booker.herokuapp.com',
     config.headers = {
         Accept:'application/json'
     }
