@@ -7,14 +7,19 @@ function fn() {
   var config = {
     env: env,
     myVarName: 'someValue',
-    url_base: ''
+    url_base: '',
+    headers:{
+        'Accept':'application/json',
+        'Content-Type':'application/json'
+    }
   }
   if (env == 'dev') {
     config.url_base = ''
   } else if (env == 'qa') {
     config.url_base = 'https://restful-booker.herokuapp.com',
     config.headers = {
-        Accept:'application/json'
+        'Accept':'application/json',
+        'Content-Type':'application/json'
     }
 
   }

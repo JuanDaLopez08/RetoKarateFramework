@@ -1,0 +1,58 @@
+Feature:
+
+  Background:
+    * headers headers
+    * def token = karate.callSingle('classpath:utilidades/crear_token_autorizacion.feature')
+    * header Cookie = 'token=' + token.response.token
+    * url url_base
+    * def informacion_random = Java.type('utilidades.DatosRandom')
+    * def crear_reserva = call read('classpath:booking/crear_reserva/crear_reserva.feature@CrearReservaExitosa')
+    * def id = crear_reserva.response.bookingid
+
+  @ActualizarReservaTotal
+  Scenario: Actualizar reserva exitosamente
+    * def nombre = informacion_random.nombreRandom()
+    * def apellido = informacion_random.apellidoRandom()
+    * def precio_total = informacion_random.precioRandom()
+    * def pago_depositado = informacion_random.pagoDepositadoRandom()
+    * def fecha_inicio = informacion_random.fechaRandom(2018,2019)
+    * def fecha_final = informacion_random.fechaRandom(2020,2024)
+    * def adicion = informacion_random.adicionales()
+    * def body_request = read("classpath:booking/crear_reserva/BodyRequest.json")
+    And path 'booking/' + id
+    * request body_request
+    * method PUT
+    Then status 200
+    And match response == body_request
+
+  @ActualizarReservaParcial
+  Scenario: Actualizar una reserva parcialmente con nombre y apellido exitosamente
+    * def reserva_inicial = karate.call('classpath:booking/consultar_reserva/consultar_reserva.feature@ConsultaReservaPorId', {id:id})
+    * def nombre = informacion_random.nombreRandom()
+    * def apellido = informacion_random.apellidoRandom()
+    And path 'booking/' + id
+    * request
+      """
+      {
+        "firstname": "#(nombre)",
+        "lastname": "#(apellido)"
+      }
+      """
+    When method PATCH
+    Then status 200
+    And match response.firstname == nombre
+    And match response.lastname == apellido
+    * def reserva_actualizada = karate.call('classpath:booking/consultar_reserva/consultar_reserva.feature@ConsultaReservaPorId', {id:id})
+    And match reserva_inicial.response.totalprice == reserva_actualizada.response.totalprice
+    And match reserva_inicial.response.depositpaid == reserva_actualizada.response.depositpaid
+    And match reserva_inicial.response.bookingdates.checkin == reserva_actualizada.response.bookingdates.checkin
+    And match reserva_inicial.response.bookingdates.checkout == reserva_actualizada.response.bookingdates.checkout
+    And match reserva_inicial.response.additionalneeds == reserva_actualizada.response.additionalneeds
+
+
+
+
+
+
+
+
