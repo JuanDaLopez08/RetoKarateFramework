@@ -1,4 +1,8 @@
-Feature:Pruebas de la api para consultar reservas
+Feature:Pruebas de la api para consultar reservas por parámetros como id, nombre y apellido o fechas
+
+  Yo como usuario del sistema
+  Quiero consumir la API de reservas
+  Para consultar la información de las reservas de manera eficiente
 
   Background:
     Given headers headers
@@ -6,8 +10,9 @@ Feature:Pruebas de la api para consultar reservas
     * path 'booking'
     * def crear_reserva = call read('classpath:booking/crear_reserva/crear_reserva.feature@CrearReservaExitosa')
 
+
   @ObtenerTodasLasReservas
-  Scenario: Obetener todos los identificadores de las reservas exitosamente
+  Scenario: Obtener todos los identificadores de las reservas exitosamente
     When method GET
     Then status 200
     And match response == "#array"
@@ -16,7 +21,7 @@ Feature:Pruebas de la api para consultar reservas
 
 
   @ObtenerReservaPorNombre&Apellido
-  Scenario: Obetener todod los identificadores de las reservas por nombre y apellido exitosamente
+  Scenario: Obtener todos los identificadores de las reservas por nombre y apellido exitosamente
     * def nombre = crear_reserva.response.booking.firstname
     * def apellido = crear_reserva.response.booking.lastname
     * param fistname = nombre
@@ -28,7 +33,7 @@ Feature:Pruebas de la api para consultar reservas
 
 
   @ObtenerReservaPorFechaCheckin&Chechout
-  Scenario: Obtener reservas por fecha checkin y fecha checkout
+  Scenario: Obtener reservas por fecha check in y fecha check out
     * def checkin = crear_reserva.response.booking.bookingdates.checkin
     * def checkout = crear_reserva.response.booking.bookingdates.checkout
     * param checkin = checkin
@@ -40,7 +45,7 @@ Feature:Pruebas de la api para consultar reservas
 
 
   @ConsultaReservaPorId
-  Scenario: Obetener reserva por identificador unico de reserva
+  Scenario: Obtener reserva por identificador único de reserva
     * def id_respuesta = crear_reserva.response.bookingid
     * def id_reserva = typeof  id !== 'undefined' ? id : id_respuesta
     And path id_reserva
@@ -55,8 +60,9 @@ Feature:Pruebas de la api para consultar reservas
     And match response.bookingdates.checkout == crear_reserva.response.booking.bookingdates.checkout
     And match response.additionalneeds == crear_reserva.response.booking.additionalneeds
 
+
   @ConsultarReservaPorId
-  Scenario: Obetener reserva por identificador unico de reserva y validacion de tipo de dato
+  Scenario: Obtener reserva por identificador único de reserva y validación de tipo de dato
     * def id_respuesta = crear_reserva.response.bookingid
     * def id_reserva = typeof  id !== 'undefined' ? id : id_respuesta
     And path id_reserva

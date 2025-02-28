@@ -1,4 +1,8 @@
-Feature:Pruebas de la api para la actualizacion de reservas
+Feature:Pruebas de la api para la actualización de reservas con todos los parámetros o parámetros parciales
+
+  Yo como usuario del sistema
+  Quiero consumir la API de reservas
+  Para actualizar las reservas de manera eficiente y validar su actualización
 
   Background:
     Given headers headers
@@ -8,6 +12,7 @@ Feature:Pruebas de la api para la actualizacion de reservas
     * def informacion_random = Java.type('utilidades.DatosRandom')
     * def crear_reserva = call read('classpath:booking/crear_reserva/crear_reserva.feature@CrearReservaExitosa')
     * def id = crear_reserva.response.bookingid
+
 
   @ActualizarReservaTotal
   Scenario: Actualizar reserva exitosamente
@@ -24,6 +29,7 @@ Feature:Pruebas de la api para la actualizacion de reservas
     When method PUT
     Then status 200
     And match response == body_request
+
 
   @ActualizarReservaParcial
   Scenario: Actualizar una reserva parcialmente con nombre y apellido exitosamente
@@ -49,8 +55,9 @@ Feature:Pruebas de la api para la actualizacion de reservas
     And match reserva_inicial.response.bookingdates.checkout == reserva_actualizada.response.bookingdates.checkout
     And match reserva_inicial.response.additionalneeds == reserva_actualizada.response.additionalneeds
 
+
   @ActualizarReservaConParametroFaltante
-  Scenario Outline: Actualizacion de una reserva cuando falta un parametro obligatorio
+  Scenario Outline: Actualización de una reserva cuando falta un parámetro obligatorio
     * def nombre = informacion_random.nombreRandom()
     * def apellido = informacion_random.apellidoRandom()
     * def precio_total = informacion_random.precioRandom()
@@ -76,12 +83,3 @@ Feature:Pruebas de la api para la actualizacion de reservas
       | { "firstname": "#(nombre)", "lastname": "#(apellido)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "additionalneeds": "#(adicion)" }                                                       |
       | { "firstname": "#(nombre)", "lastname": "#(apellido)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "bookingdates": { "checkout": "#(fecha_final)" }, "additionalneeds": "#(adicion)" }     |
       | { "firstname": "#(nombre)", "lastname": "#(apellido)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "bookingdates": { "checkin": "#(fecha_inicio)" }, "additionalneeds": "#(adicion)" }     |
-
-
-
-
-
-
-
-
-

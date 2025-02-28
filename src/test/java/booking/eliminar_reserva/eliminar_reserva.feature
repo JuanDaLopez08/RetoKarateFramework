@@ -1,5 +1,9 @@
 Feature:Pruebas a la api de eliminar reservas
 
+  Yo como usuario del sistema
+  Quiero consumir la API de reservas
+  Para eliminar reservas que ya no son necesarias
+
   Background:
     Given headers headers
     * def token = karate.callSingle('classpath:utilidades/crear_token_autorizacion.feature')

@@ -1,4 +1,4 @@
-Feature:Pruebas a la api para creacion de reservas
+Feature:Pruebas a la api para creación de reservas
 
 Yo como usuario del sistema
 Quiero consumir la API de reservas
@@ -9,6 +9,7 @@ Para generar reservas de manera eficiente y validar su funcionamiento
     * url url_base
     * path 'booking'
     And def informacion_random = Java.type('utilidades.DatosRandom')
+
 
   @CrearReservaExitosa
   Scenario: Crear un reserva de manera exitosa
@@ -56,7 +57,3 @@ Para generar reservas de manera eficiente y validar su funcionamiento
       | { "firstname": "#(nombre)", "lastname": "#(apellido)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "bookingdates": { "checkout": "#(fecha_final)" }, "additionalneeds": "#(adicion)" }     |
       | { "firstname": "#(nombre)", "lastname": "#(apellido)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "bookingdates": { "checkin": "#(fecha_inicio)" }, "additionalneeds": "#(adicion)" }     |
       | { "firstname": "#(nombre)", "lastname": "#(apellido)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "bookingdates": { "checkin": "#(fecha_inicio)", "checkout": "#(fecha_final)" } }        |
-
-
-
-
