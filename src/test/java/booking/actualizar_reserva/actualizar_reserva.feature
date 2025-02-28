@@ -1,4 +1,4 @@
-Feature:
+Feature:Pruebas de la api para la actualizacion de reservas
 
   Background:
     * headers headers

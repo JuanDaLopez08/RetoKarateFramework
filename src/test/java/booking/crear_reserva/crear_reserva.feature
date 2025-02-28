@@ -1,4 +1,4 @@
-Feature:Pruebas de la api de reservas
+Feature:Pruebas a la api para creacion de reservas
 
 Yo como usuario del sistema
 Quiero consumir la API de reservas

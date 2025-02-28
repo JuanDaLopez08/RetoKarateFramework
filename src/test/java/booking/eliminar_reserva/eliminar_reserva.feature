@@ -1,4 +1,4 @@
-Feature:
+Feature:Pruebas a la api de eliminar reservas
 
   Background:
     * headers headers
