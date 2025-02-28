@@ -1,10 +1,10 @@
 Feature:Pruebas de la api para la actualizacion de reservas
 
   Background:
-    * headers headers
+    Given headers headers
     * def token = karate.callSingle('classpath:utilidades/crear_token_autorizacion.feature')
-    * header Cookie = 'token=' + token.response.token
-    * url url_base
+    And header Cookie = 'token=' + token.response.token
+    And url url_base
     * def informacion_random = Java.type('utilidades.DatosRandom')
     * def crear_reserva = call read('classpath:booking/crear_reserva/crear_reserva.feature@CrearReservaExitosa')
     * def id = crear_reserva.response.bookingid
@@ -20,8 +20,8 @@ Feature:Pruebas de la api para la actualizacion de reservas
     * def adicion = informacion_random.adicionales()
     * def body_request = read("classpath:booking/crear_reserva/BodyRequest.json")
     And path 'booking/' + id
-    * request body_request
-    * method PUT
+    And request body_request
+    When method PUT
     Then status 200
     And match response == body_request
 
@@ -31,7 +31,7 @@ Feature:Pruebas de la api para la actualizacion de reservas
     * def nombre = informacion_random.nombreRandom()
     * def apellido = informacion_random.apellidoRandom()
     And path 'booking/' + id
-    * request
+    And request
       """
       {
         "firstname": "#(nombre)",
@@ -63,7 +63,7 @@ Feature:Pruebas de la api para la actualizacion de reservas
       <requestBody>
       """
     And path 'booking/' + id
-    * request body_request
+    And request body_request
     When method PUT
     Then status 400
 

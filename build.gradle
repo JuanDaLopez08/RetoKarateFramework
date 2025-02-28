@@ -2,6 +2,9 @@ plugins {
     id 'java'
 }
 
+group = 'com.sistecredito.qa'
+version = '1.0-SNAPSHOT'
+
 repositories {
     mavenCentral()
     mavenLocal()

@@ -1,10 +1,10 @@
 Feature:Pruebas a la api de eliminar reservas
 
   Background:
-    * headers headers
+    Given headers headers
     * def token = karate.callSingle('classpath:utilidades/crear_token_autorizacion.feature')
-    * header Cookie = 'token=' + token.response.token
-    * url url_base
+    And header Cookie = 'token=' + token.response.token
+    And url url_base
     * def crear_reserva = call read('classpath:booking/crear_reserva/crear_reserva.feature@CrearReservaExitosa')
 
 
@@ -12,7 +12,7 @@ Feature:Pruebas a la api de eliminar reservas
   Scenario: Eliminar una reserva exitosamente
     * def id_respuesta = crear_reserva.response.bookingid
     * def id_reserva = typeof  id !== 'undefined' ? id : id_respuesta
-    Given path 'booking'
+    And path 'booking'
     And path id_reserva
     When method DELETE
     Then status 201
@@ -22,7 +22,7 @@ Feature:Pruebas a la api de eliminar reservas
   @EliinarUnaReserva&Buscarla
   Scenario: Eliminar una reserva y buscar si se elimino correctamente
     * def id = crear_reserva.response.bookingid
-    Given path 'booking'
+    And path 'booking'
     And path id
     When method DELETE
     Then status 201

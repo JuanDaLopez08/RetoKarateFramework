@@ -22,7 +22,6 @@ Para generar reservas de manera eficiente y validar su funcionamiento
     * def body_request = read("classpath:booking/crear_reserva/BodyRequest.json")
     * def body_response_schema = read("classpath:booking/crear_reserva/BodyResponseSchema.json")
     And request body_request
-
     When method POST
     Then status 200
     And match response == body_response_schema
