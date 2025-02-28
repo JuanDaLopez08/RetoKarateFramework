@@ -4,35 +4,69 @@ Feature:
     * headers headers
     * url url_base
     * path 'booking'
+   * def crear_reserva = call read('classpath:booking/crear_reserva/crear_reserva.feature@CrearReservaExitosa')
 
-  Scenario: Obetener todos los ids de reservas exitosamente
+  @ObtenerTodasLasReservas
+  Scenario: Obetener todos los identificadores de las reservas exitosamente
     * method GET
     Then status 200
-    * print response
+    And match response == "#array"
+    * def reservas = response
+    * if(reservas.length > 0) karate.match(reservas[0].bookingid, '#number')
 
 
-  Scenario: Obetener reservas por nombre y apellido
-    * param fistname = 'Bud'
-    * param lastname = 'Wehner'
+  @ObtenerReservaPorNombre&Apellido
+  Scenario: Obetener todod los identificadores de las reservas por nombre y apellido exitosamente
+    * def nombre = crear_reserva.response.booking.firstname
+    * def apellido = crear_reserva.response.booking.lastname
+    * param fistname = nombre
+    * param lastname = apellido
     * method GET
     Then status 200
+    And match response == "#array"
+    And match response[0].bookingid == "#number"
 
+
+  @ObtenerReservaPorFechaCheckin&Chechout
   Scenario: Obtener reservas por fecha checkin y fecha checkout
-    * param checkin = '2018-05-30'
-    * param checkout = '2021-12-24'
+    * def checkin = crear_reserva.response.booking.bookingdates.checkin
+    * def checkout = crear_reserva.response.booking.bookingdates.checkout
+    * param checkin = checkin
+    * param checkout = checkout
     * method GET
     Then status 200
-    * print response
+    And match response == "#array"
+    And match response[0].bookingid == "#number"
+
 
   @ConsultaReservaPorId
-  Scenario: Obetener reserva por id
-    * def id = id
-    Given path id
+  Scenario: Obetener reserva por identificador unico de reserva
+    * def id_respuesta = crear_reserva.response.bookingid
+    * def id_reserva = typeof  id !== 'undefined' ? id : id_respuesta
+    Given path id_reserva
     * method GET
     Then status 200
-    * print 'AQUI ESTAMOS EN LA CONSULTA A LA RESERVA'
-    * print response
+    And match response == "#object"
+    And match response.firstname == crear_reserva.response.booking.firstname
+    And match response.lastname == crear_reserva.response.booking.lastname
+    And match response.totalprice == crear_reserva.response.booking.totalprice
+    And match response.depositpaid == crear_reserva.response.booking.depositpaid
+    And match response.bookingdates.checkin == crear_reserva.response.booking.bookingdates.checkin
+    And match response.bookingdates.checkout == crear_reserva.response.booking.bookingdates.checkout
+    And match response.additionalneeds == crear_reserva.response.booking.additionalneeds
 
+  @ConsultarReservaPorId
+  Scenario: Obetener reserva por identificador unico de reserva y validacion de tipo de dato
+    * def id_respuesta = crear_reserva.response.bookingid
+    * def id_reserva = typeof  id !== 'undefined' ? id : id_respuesta
+    Given path id_reserva
+    * method GET
+    Then status 200
+    And match response == "#object"
+
+  @ConsultarIdRervaEliminada
+  Scenario: Consultar una reserva cuando ya fue eliminada
+    * def id = crear_reserva.response.bookingid
 
 
 

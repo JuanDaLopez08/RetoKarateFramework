@@ -27,7 +27,7 @@ Feature:
 
   @ActualizarReservaParcial
   Scenario: Actualizar una reserva parcialmente con nombre y apellido exitosamente
-    * def reserva_inicial = karate.call('classpath:booking/consultar_reserva/consultar_reserva.feature@ConsultaReservaPorId', {id:id})
+    * def reserva_inicial = karate.call('classpath:booking/consultar_reserva/consultar_reserva.feature@ConsultarReservaPorId', {id:id})
     * def nombre = informacion_random.nombreRandom()
     * def apellido = informacion_random.apellidoRandom()
     And path 'booking/' + id
@@ -42,12 +42,41 @@ Feature:
     Then status 200
     And match response.firstname == nombre
     And match response.lastname == apellido
-    * def reserva_actualizada = karate.call('classpath:booking/consultar_reserva/consultar_reserva.feature@ConsultaReservaPorId', {id:id})
+    * def reserva_actualizada = karate.call('classpath:booking/consultar_reserva/consultar_reserva.feature@ConsultarReservaPorId', {id:id})
     And match reserva_inicial.response.totalprice == reserva_actualizada.response.totalprice
     And match reserva_inicial.response.depositpaid == reserva_actualizada.response.depositpaid
     And match reserva_inicial.response.bookingdates.checkin == reserva_actualizada.response.bookingdates.checkin
     And match reserva_inicial.response.bookingdates.checkout == reserva_actualizada.response.bookingdates.checkout
     And match reserva_inicial.response.additionalneeds == reserva_actualizada.response.additionalneeds
+
+  @ActualizarReservaConParametroFaltante
+  Scenario Outline: Actualizacion de una reserva cuando falta un parametro obligatorio
+    * def nombre = informacion_random.nombreRandom()
+    * def apellido = informacion_random.apellidoRandom()
+    * def precio_total = informacion_random.precioRandom()
+    * def pago_depositado = informacion_random.pagoDepositadoRandom()
+    * def fecha_inicio = informacion_random.fechaRandom(2018,2019)
+    * def fecha_final = informacion_random.fechaRandom(2020,2024)
+    * def adicion = informacion_random.adicionales()
+    * def body_request =
+      """
+      <requestBody>
+      """
+    And path 'booking/' + id
+    * request body_request
+    When method PUT
+    Then status 400
+
+    Examples:
+      | requestBody                                                                                                                                                                                                      |
+      | { "lastname": "#(apellido)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "bookingdates": { "checkin": "#(fecha_inicio)", "checkout": "#(fecha_final)" }, "additionalneeds": "#(adicion)" } |
+      | { "firstname": "#(nombre)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "bookingdates": { "checkin": "#(fecha_inicio)", "checkout": "#(fecha_final)" }, "additionalneeds": "#(adicion)" }  |
+      | { "firstname": "#(nombre)", "lastname": "#(apellido)", "depositpaid": #(pago_depositado), "bookingdates": { "checkin": "#(fecha_inicio)", "checkout": "#(fecha_final)" }, "additionalneeds": "#(adicion)" }      |
+      | { "firstname": "#(nombre)", "lastname": "#(apellido)", "totalprice": #(precio_total), "bookingdates": { "checkin": "#(fecha_inicio)", "checkout": "#(fecha_final)" }, "additionalneeds": "#(adicion)" }          |
+      | { "firstname": "#(nombre)", "lastname": "#(apellido)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "additionalneeds": "#(adicion)" }                                                       |
+      | { "firstname": "#(nombre)", "lastname": "#(apellido)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "bookingdates": { "checkout": "#(fecha_final)" }, "additionalneeds": "#(adicion)" }     |
+      | { "firstname": "#(nombre)", "lastname": "#(apellido)", "totalprice": #(precio_total), "depositpaid": #(pago_depositado), "bookingdates": { "checkin": "#(fecha_inicio)" }, "additionalneeds": "#(adicion)" }     |
+
 
 
 

@@ -15,5 +15,3 @@ Feature:
     """
     * method POST
     Then status 200
-    * print 'AQUI ESTAMOS EN EL AUTH'
-    * print response
