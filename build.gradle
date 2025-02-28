@@ -17,7 +17,7 @@ test {
 dependencies {
     testImplementation group: 'io.karatelabs', name: 'karate-junit5', version: '1.5.0'
     testImplementation group: 'net.datafaker', name: 'datafaker', version: '2.4.2'
-
+    testImplementation group: 'net.masterthought', name: 'cucumber-reporting', version: '5.7.8'
 }
 
 sourceSets {

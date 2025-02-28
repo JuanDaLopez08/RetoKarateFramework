@@ -64,9 +64,16 @@ Feature:
     Then status 200
     And match response == "#object"
 
+
   @ConsultarIdRervaEliminada
   Scenario: Consultar una reserva cuando ya fue eliminada
-    * def id = crear_reserva.response.bookingid
+    * def id_respuesta = crear_reserva.response.bookingid
+    * def id_reserva = typeof  id !== 'undefined' ? id : id_respuesta
+    * def eliminar_reserva = karate.call('classpath:booking/eliminar_reserva/eliminar_reserva.feature@EliminarReservaPorId', {id:id_respuesta})
+    * path id_reserva
+    * method GET
+    Then status 404
+    And match response == "Not Found"
 
 
 

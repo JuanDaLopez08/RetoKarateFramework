@@ -1,13 +1,17 @@
-Feature:
+Feature:Pruebas de la api de reservas
+
+Yo como usuario del sistema
+Quiero consumir la API de reservas
+Para generar reservas de manera eficiente y validar su funcionamiento
 
   Background:
-    * headers headers
+    Given headers headers
     * url url_base
     * path 'booking'
-    * def informacion_random = Java.type('utilidades.DatosRandom')
+    And def informacion_random = Java.type('utilidades.DatosRandom')
 
   @CrearReservaExitosa
-  Scenario:
+  Scenario: Crear un reserva de manera exitosa
     * def nombre = informacion_random.nombreRandom()
     * def apellido = informacion_random.apellidoRandom()
     * def precio_total = informacion_random.precioRandom()
@@ -19,7 +23,7 @@ Feature:
     * def body_response_schema = read("classpath:booking/crear_reserva/BodyResponseSchema.json")
     And request body_request
 
-    * method POST
+    When method POST
     Then status 200
     And match response == body_response_schema
     And match response.booking == body_request
