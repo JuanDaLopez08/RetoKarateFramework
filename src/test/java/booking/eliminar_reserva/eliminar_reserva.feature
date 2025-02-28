@@ -6,7 +6,7 @@ Feature:Pruebas a la api de eliminar reservas
 
   Background:
     Given headers headers
-    * def token = karate.callSingle('classpath:utilidades/crear_token_autorizacion.feature')
+    * def token = karate.callSingle('classpath:utilidades/obtener_token/crear_token_autorizacion.feature')
     And header Cookie = 'token=' + token.response.token
     And url url_base
     * def crear_reserva = call read('classpath:booking/crear_reserva/crear_reserva.feature@CrearReservaExitosa')

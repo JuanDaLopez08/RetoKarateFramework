@@ -21,7 +21,6 @@ function fn() {
         'Accept':'application/json',
         'Content-Type':'application/json'
     }
-
   }
   return config;
 }

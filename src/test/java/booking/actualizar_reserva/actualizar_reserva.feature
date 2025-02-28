@@ -6,7 +6,7 @@ Feature:Pruebas de la api para la actualización de reservas con todos los pará
 
   Background:
     Given headers headers
-    * def token = karate.callSingle('classpath:utilidades/crear_token_autorizacion.feature')
+    * def token = karate.callSingle('classpath:utilidades/obtener_token/crear_token_autorizacion.feature')
     And header Cookie = 'token=' + token.response.token
     And url url_base
     * def informacion_random = Java.type('utilidades.DatosRandom')
